@@ -53,4 +53,16 @@ public class TestMainVerticle {
                 }));
     }
 
+    @Test
+    public void deleteServiceTest(Vertx vertx, VertxTestContext context) {
+        System.out.println("Testing delete service");
+
+        WebClient.create(vertx).delete(8080, "::1", "/service/1")
+                .putHeader("content-type", "application/json")
+                .send(response -> context.verify(() -> {
+                    assertEquals(204, response.result().statusCode());
+                    context.completeNow();
+                }));
+    }
+
 }
