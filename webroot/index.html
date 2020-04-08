@@ -1,17 +1,48 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Welcome to KRY</title>
+    <title>KRY Status Poller</title>
+    <script src="./static/js/angular.js"></script>
+    <script src="./static/js/code.js"></script>
 </head>
-<body>
-KRY status poller
-<ul id="service-list">
-</ul>
-<input type="text" id="url-name">
-<button id="post-service">Save</button>
+
+<body ng-app="exercise">
+<br/>
+<br/>
+<br/>
+<div>
+    <h3>Service List</h3>
+    <div ng-repeat="service in serviceList">
+        <span><b>URL</b>: {{service.url}}</span>
+        <span>,<b>Description:</b> {{service.description}}</span>
+        <span>,<b>Creation Date:</b> {{service.creationTime}}</span>
+        <span>,<b>Last Poll Time:</b> {{service.lastPollTime}}</span>
+        <span>,<b>Status: </b>{{service.status}}</span>
+        <button ng-click="editService(service)">Edit</button>
+        <button ng-click="removeService(service.id)">Remove</button>
+    </div>
+</div>
+<br/>
+<br/>
+<div>
+    <h5>Add Service</h5>
+    <div>
+        URL: <input ng-model="url"/>
+        Description: <input ng-model="description"/>
+        <button ng-click="addService(url,description)">Add Service</button>
+    </div>
+</div>
+<br/>
+<br/>
+<div>
+    <h5>Update Service</h5>
+    <div>
+        <div><b>Id: </b>{{editServiceId}}, <b>URL:</b> {{editServiceUrl}}, <b>Description: </b>{{editServiceDescription}}</div>
+        URL: <input ng-model="editServiceUrl"/>
+        Description: <input ng-model="editServiceDescription"/>
+        <button ng-click="updateService(editServiceId, editServiceUrl, editServiceDescription)">Update Service</button>
+    </div>
+</div>
 
 </body>
-<script src="static/code.js">
-</script>
 </html>
