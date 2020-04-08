@@ -65,4 +65,19 @@ public class TestMainVerticle {
                 }));
     }
 
+    @Test
+    public void updateServiceTest(Vertx vertx, VertxTestContext context) {
+        System.out.println("Testing updating service");
+        Map<String, Object> req = new HashMap<>();
+        req.put("url", "http://google.com");
+        req.put("description", "google web site");
+
+        WebClient.create(vertx).put(8080, "::1", "/service/1")
+                .putHeader("content-type", "application/json")
+                .sendJson(new JsonObject(req), response -> context.verify(() -> {
+                    assertEquals(200, response.result().statusCode());
+                    context.completeNow();
+                }));
+    }
+
 }
