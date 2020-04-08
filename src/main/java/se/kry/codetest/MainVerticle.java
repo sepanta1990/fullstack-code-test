@@ -71,6 +71,23 @@ public class MainVerticle extends AbstractVerticle {
 
         });
 
+        router.delete("/service/:id").handler(req -> {
+            String id = req.request().getParam("id");
+            if (id == null) {
+                req.response().setStatusCode(400).end();
+            } else {
+                connector.query("DELETE FROM service WHERE id=?", new JsonArray().add(id))
+                        .setHandler(event -> {
+                            if (event.succeeded()) {
+                                req.response().setStatusCode(204).end();
+                            } else {
+                                event.cause().printStackTrace();
+                                req.response().setStatusCode(400).end();
+                            }
+                        });
+            }
+        });
+
     }
 
     private JsonObject convertRowToJsonObject(JsonObject row) {
