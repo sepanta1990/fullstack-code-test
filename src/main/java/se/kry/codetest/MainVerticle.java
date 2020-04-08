@@ -58,6 +58,18 @@ public class MainVerticle extends AbstractVerticle {
 
         });
 
+        router.post("/service").handler(req -> {
+            JsonObject jsonBody = req.getBodyAsJson();
+
+            connector.query("INSERT INTO service(url, description, creation_time) VALUES(?,?,?)",
+                    new JsonArray().add(jsonBody.getString("url")).
+                            add(jsonBody.getString("description")).add(System.currentTimeMillis()))
+                    .setHandler(event -> {
+                        req.response().setStatusCode(200).end();
+
+                    });
+
+        });
 
     }
 
