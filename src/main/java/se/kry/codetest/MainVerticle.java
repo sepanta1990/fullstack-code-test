@@ -88,6 +88,21 @@ public class MainVerticle extends AbstractVerticle {
             }
         });
 
+        router.put("/service/:id").handler(req -> {
+            String id = req.request().getParam("id");
+            if (id == null) {
+                req.response().setStatusCode(400).end();
+            } else {
+                JsonObject request = req.getBodyAsJson();
+
+                connector.query("UPDATE service set url=?, description=? WHERE id=?",
+                        new JsonArray().add(request.getString("url")).add(request.getString("description")).add(id))
+                        .setHandler(event -> {
+                            req.response().setStatusCode(200).end();
+                        });
+            }
+        });
+
     }
 
     private JsonObject convertRowToJsonObject(JsonObject row) {
